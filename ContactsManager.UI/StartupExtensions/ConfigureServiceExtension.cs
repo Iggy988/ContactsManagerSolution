@@ -1,6 +1,9 @@
-﻿using CRUDExample.Filters.ActionFilters;
+﻿using ContactsManager.Core.Domain.IdentityEntities;
+using CRUDExample.Filters.ActionFilters;
 using Enttities;
 using Microsoft.AspNetCore.HttpLogging;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Repositories;
 using RepositoryContracts;
@@ -54,6 +57,19 @@ public static class ConfigureServiceExtension
         });
         // da mozemo inject u bilo koju class
         services.AddTransient<PersonsListActionFilter>();
+
+        //Enable Identity in this Project
+        //create data
+        //application layer level
+        services.AddIdentity<ApplicationUser, ApplicationRole>()
+            //store data
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            //to generate OTP(one time password) and sent email to user, to user reenter that password to confirm user account
+            .AddDefaultTokenProviders()
+            //repository layer level
+            .AddUserStore<UserStore<ApplicationUser, ApplicationRole, ApplicationDbContext, Guid>>()
+
+            .AddRoleStore<RoleStore<ApplicationRole, ApplicationDbContext, Guid>>();
 
         //Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=PersonsDatabase;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False
 
