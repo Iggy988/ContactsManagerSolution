@@ -1,4 +1,6 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using ContactsManager.Core.Domain.IdentityEntities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Enttities;
 
-public class ApplicationDbContext : DbContext
+public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
 {
     //sve sto je uneseno u options u Program.cs (DbContextOptionsBuilder) bice proslijedjeno ovdje u options preko base
     public ApplicationDbContext(DbContextOptions options):base(options)
