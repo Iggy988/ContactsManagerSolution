@@ -61,7 +61,15 @@ public static class ConfigureServiceExtension
         //Enable Identity in this Project
         //create data
         //application layer level
-        services.AddIdentity<ApplicationUser, ApplicationRole>()
+        services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
+        {
+            options.Password.RequiredLength = 9;
+            options.Password.RequireNonAlphanumeric = true;
+            options.Password.RequireDigit = true;
+            options.Password.RequireUppercase = true;
+            options.Password.RequireLowercase = true;
+            options.Password.RequiredUniqueChars = 1; //Cr83ttdw$
+        })
             //store data
             .AddEntityFrameworkStores<ApplicationDbContext>()
             //to generate OTP(one time password) and sent email to user, to user reenter that password to confirm user account

@@ -32,5 +32,6 @@ public class RegisterDTO
 
     [Required(ErrorMessage = "Confirm Password can't be blank")]
     [DataType(DataType.Password)]
+    [Compare("Password", ErrorMessage = "Password and Confirm Password do not match")]
     public string ConfirmPassword { get; set; }
 }

@@ -62,8 +62,11 @@ if (builder.Environment.IsEnvironment("Test")==false)
     Rotativa.AspNetCore.RotativaConfiguration.Setup(rootPath:"wwwroot", wkhtmltopdfRelativePath:"Rotativa");
 
 app.UseStaticFiles();
-app.UseRouting();
-app.MapControllers();
+
+//moramo dodati Authentication middleware - cita auth cookie i ekstraktuje user name i dr. podatke -> budu dostupni u user propertiju
+app.UseAuthentication();// Reading Identity cookie
+app.UseRouting();// Identifing action method based route
+app.MapControllers(); // Execute filter pipline (action + filters)
 
 app.Run();
 
