@@ -69,7 +69,7 @@ public class AccountController : Controller
         return View();
     }
     [HttpPost]
-    public async Task<IActionResult> Login(LoginDTO loginDTO)
+    public async Task<IActionResult> Login(LoginDTO loginDTO, string? ReturnUrl)
     {
         if (!ModelState.IsValid)
         {
@@ -77,8 +77,13 @@ public class AccountController : Controller
             return View(loginDTO);
         }
         var result = await _signInManager.PasswordSignInAsync(loginDTO.Email, loginDTO.Password, isPersistent: false, lockoutOnFailure: false); //ako pokusa 3 pogresna ulaza da li da se zakljuca
+        
         if (result.Succeeded)
         {
+            if (!string.IsNullOrEmpty(ReturnUrl) && Url.IsLocalUrl(ReturnUrl))
+            {
+                return LocalRedirect(ReturnUrl); //same domain
+            }
             return RedirectToAction(nameof(PersonsController.Index), "Persons");
         }
 

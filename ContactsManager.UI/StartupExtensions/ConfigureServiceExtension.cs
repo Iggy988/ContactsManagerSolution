@@ -92,8 +92,8 @@ public static class ConfigureServiceExtension
 
         services.ConfigureApplicationCookie(options =>
         {
-            // ako user nije loged in, automatski se redirectuje na ovaj url
-            options.LoginPath = "~/Account/Login";
+            // ako user nije loged in, automatski se redirectuje na ovaj url (povezano sa AddAuthorization)
+            options.LoginPath = "/Account/Login";
         });
 
         services.AddHttpLogging(opt =>
