@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -16,6 +17,7 @@ public class RegisterDTO
 
     [Required(ErrorMessage = "Email can't be blank")]
     [EmailAddress(ErrorMessage = "Email should be in a proper email address format")]
+    [Remote(action: "IsEmailAlreadyRegistred", controller:"Account", ErrorMessage ="Email is already in use")]
     public string Email { get; set; }
 
 

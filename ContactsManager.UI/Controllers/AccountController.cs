@@ -96,5 +96,19 @@ public class AccountController : Controller
         await _signInManager.SignOutAsync(); // remove cookie (.AspNetCore.Identity.Application)
         return RedirectToAction(nameof(PersonsController.Index), "Persons");
     }
+
+    public async Task<IActionResult> IsEmailAlreadyRegistred(string email)
+    {
+        ApplicationUser user = await _userManager.FindByEmailAsync(email);
+
+        if (user ==null)
+        {
+            return Json(true); // valid
+        }
+        else
+        {
+            return Json(false); //invalid
+        }
+    }
 }
 
