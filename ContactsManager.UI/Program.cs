@@ -63,9 +63,11 @@ if (builder.Environment.IsEnvironment("Test")==false)
 
 app.UseStaticFiles();
 
+
+app.UseRouting();// Identifing action method based route
 //moramo dodati Authentication middleware - cita auth cookie i ekstraktuje user name i dr. podatke -> budu dostupni u user propertiju
 app.UseAuthentication();// Reading Identity cookie
-app.UseRouting();// Identifing action method based route
+app.UseAuthorization(); //Validates access permition of the user
 app.MapControllers(); // Execute filter pipline (action + filters)
 
 app.Run();

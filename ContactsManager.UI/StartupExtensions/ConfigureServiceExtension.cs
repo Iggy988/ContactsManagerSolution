@@ -1,6 +1,7 @@
 ﻿using ContactsManager.Core.Domain.IdentityEntities;
 using CRUDExample.Filters.ActionFilters;
 using Enttities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -49,14 +50,16 @@ public static class ConfigureServiceExtension
         services.AddScoped<IPersonsUpdaterService, PersonsUpdaterService>();
         services.AddScoped<IPersonsSorterService, PersonsSorterService>();
 
+        // da mozemo inject u bilo koju class
+        services.AddTransient<PersonsListActionFilter>();
+
         //service za di dbContext i UseSqlServer za db connection
         services.AddDbContext<ApplicationDbContext>(opts =>
         {
             //builder.Configuration... => configuration
             opts.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
         });
-        // da mozemo inject u bilo koju class
-        services.AddTransient<PersonsListActionFilter>();
+        
 
         //Enable Identity in this Project
         //create data
@@ -80,6 +83,18 @@ public static class ConfigureServiceExtension
             .AddRoleStore<RoleStore<ApplicationRole, ApplicationDbContext, Guid>>();
 
         //Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=PersonsDatabase;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False
+
+        services.AddAuthorization(options =>
+        {
+            //enforces authorization policy(user must be authenticated) for all the action methods
+            options.FallbackPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+        });
+
+        services.ConfigureApplicationCookie(options =>
+        {
+            // ako user nije loged in, automatski se redirectuje na ovaj url
+            options.LoginPath = "~/Account/Login";
+        });
 
         services.AddHttpLogging(opt =>
         {
