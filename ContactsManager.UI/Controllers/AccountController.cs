@@ -103,6 +103,18 @@ public class AccountController : Controller
         
         if (result.Succeeded)
         {
+            //Admin
+            //provjeravamo da li smo ulogovani preko emaila za specific usera
+            ApplicationUser user = await _userManager.FindByEmailAsync(loginDTO.Email);
+            if (user != null)
+            {
+                //provjeravamo da li je taj user admin
+                if (await _userManager.IsInRoleAsync(user, UserTypeOptions.Admin.ToString()))
+                {
+                    // kada hocemo da navigate to area, moramo to navesti kao 3. parametar
+                    return RedirectToAction("Index", "Home", new {area = "Admin"});
+                }
+            }
             if (!string.IsNullOrEmpty(ReturnUrl) && Url.IsLocalUrl(ReturnUrl))
             {
                 return LocalRedirect(ReturnUrl); //same domain

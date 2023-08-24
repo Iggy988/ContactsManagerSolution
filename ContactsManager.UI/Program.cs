@@ -10,6 +10,7 @@ using Serilog;
 using CRUDExample.Filters.ActionFilters;
 using CRUDExample;
 using CRUDExample.Middleware;
+using Microsoft.AspNetCore.Builder;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -72,6 +73,12 @@ app.MapControllers(); // Execute filter pipline (action + filters)
 
 app.UseEndpoints(endpoints =>
 {
+    endpoints.MapControllerRoute(
+        name: "areas",
+        pattern: "{area:exists}/{controller=Home}/{action=Index}" //exixts -obavezan element
+        //Admin/Home/Index == Admin(kad stavimo default value)
+        );
+
     endpoints.MapControllerRoute(
         name: "default",
         pattern: "{controller}/{action}/{id?}"
