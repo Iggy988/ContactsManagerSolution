@@ -88,6 +88,17 @@ public static class ConfigureServiceExtension
         {
             //enforces authorization policy(user must be authenticated) for all the action methods
             options.FallbackPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+            // kreiranje custom Autorization policy
+            options.AddPolicy("NotAuthorized", policy =>
+            {
+                //ovo ce biti executed kad we appied NotAuthorized code
+                policy.RequireAssertion(context =>
+                {
+                    //return true; //true- user ima pristup/false - nema
+                    // ako user nije loged in IsAuthenticated ce biti false
+                    return !context.User.Identity.IsAuthenticated; //vraca false
+                });
+            });
         });
 
         services.ConfigureApplicationCookie(options =>
