@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Repositories;
 using RepositoryContracts;
@@ -31,6 +32,8 @@ public static class ConfigureServiceExtension
                 Value = "My-Value-From-Global",
                 Order = 2
             });
+            //adding global filter for AutoValidateAntiforgeryToken (auto -> only for post action methods)
+            options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
         });
 
 

@@ -34,7 +34,7 @@ public class AccountController : Controller
     }
     [HttpPost]
     [Authorize("NotAuthorized")]
-    [ValidateAntiForgeryToken]
+    //[ValidateAntiForgeryToken] -dodali smo globaly
     public async Task<IActionResult> Register(RegisterDTO registerDTO)
     {
         //Check for validation errors
