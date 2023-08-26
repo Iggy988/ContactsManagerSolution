@@ -53,6 +53,10 @@ else
     app.UseExceptionHandlingMiddleware();
 }
 
+// prebacujemo app na https
+app.UseHsts();// force browser to use https
+app.UseHttpsRedirection();
+
 app.UseSerilogRequestLogging();
 
 //http logging
